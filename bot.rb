@@ -25,7 +25,7 @@ def is_day
   return false
 end
 
-if !is_day()
+if is_day()
   p response = client.post_tweet(text: 'Yes')
   puts response
   puts "Tweeted!"
