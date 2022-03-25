@@ -18,8 +18,6 @@ def is_day
       YaleMenus.meal_items(meal['id']).each { |item|
         if item['name'].downcase().include? 'chicken tenders'
           return true
-        else
-          puts "#{item['name']} is not chicken tenders"
         end
       }
     }
