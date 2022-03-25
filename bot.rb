@@ -1,17 +1,34 @@
 require 'json'
-require 'twitter'
-require './generator'
+require 'tweetkit'
+require 'yalemenus'
 
 credentials = JSON.parse(File.read("credentials.json"))
 
-client = Twitter::REST::Client.new do |config|
+client = Tweetkit::Client.new do |config|
     config.consumer_key = credentials['consumer_key']
     config.consumer_secret = credentials['consumer_secret']
+    #config.bearer_token = credentials['bearer_token']
     config.access_token = credentials['access_token']
     config.access_token_secret = credentials['access_token_secret']
 end
 
-if is_day()
-  client.update('Yes')
-  puts "Tweeted:\n#{text}"
+def is_day
+  YaleMenus.halls.each { |hall|
+    YaleMenus.hall_meals(hall['id'], date: Date.today).each { |meal|
+      YaleMenus.meal_items(meal['id']).each { |item|
+        if item['name'].downcase().include? 'chicken tenders'
+          return true
+        else
+          puts "#{item['name']} is not chicken tenders"
+        end
+      }
+    }
+  }
+  return false
+end
+
+if !is_day()
+  p response = client.post_tweet(text: 'Yes')
+  puts response
+  puts "Tweeted!"
 end
