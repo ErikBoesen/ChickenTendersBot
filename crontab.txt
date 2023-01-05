@@ -1,2 +1,1 @@
-# Note: running on tiger zoo node
 0 */2 * * * (cd ~/ChickenTendersBot && ruby bot.rb) &> ~/chickentendersbot_log
